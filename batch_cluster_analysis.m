@@ -1,9 +1,9 @@
 
-base='151112_A540_EGF_COT_10ms_1500mW_40ug_'; % select the base name of the folder
+base='A549_EGFR_Y38_1500mW_10ms_IAV_'; % select the base name of the folder
 
-for i=[1,2,3,4,5];
+for i=[1,2,3,4,5,6,7];
 
-path=['Z:\Christian-Sieben\data_HTP\2015-11-12_EGF_Titration_A549\' base, num2str(i)];
+path=['Z:\Christian-Sieben\data_HTP\2015-11-25_EGFR_A549\' base, num2str(i)];
 % path=['Z:\Christian-Sieben\data_Olympus\151021_A549_aEGFR_SNA\TS Analysis\new grouped'];
 
 filename_peaks=[base, num2str(i), '_MMStack_locResults'];
@@ -14,7 +14,7 @@ cd(path)
 
 [newCon,inCluster,MeanMol,ClusterDensity,MeanClusDis,LocsPerArea,TotalLocs]=DBSCAN_analysis_HTP(filename_peaks,0);
 
-cd('Z:\Christian-Sieben\data_HTP\2015-11-12_EGF_Titration_A549\Cluster Analysis')
+cd('Z:\Christian-Sieben\data_HTP\2015-11-25_EGFR_A549\Cluster Analysis')
 
 if  i==1;
     
