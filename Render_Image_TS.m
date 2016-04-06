@@ -4,40 +4,40 @@ function Render_Image_HTP(filename,pxlsize)
 
 % Load data set, plot 2D histogram and Gaussian Blur  
 
-file = fopen(filename);
+filename2=[filename '.csv'];
+locs=dlmread(filename2,',',1,0);
+
+file = fopen(filename2);
 line = fgetl(file);
 h = regexp( line, ',', 'split' );
 
-x = strmatch('x [nm]',h);
-y = strmatch('y [nm]',h);
-LL = strmatch('loglikelihood',h);
-
+% Form Thunderstorm
 
 x = strmatch('"x [nm]"',h);
 y = strmatch('"y [nm]"',h);
 frame = strmatch('"frame"',h);
 
-% Load file
-locs=dlmread(filename,',',1,0);
+% Pxlsize correction
 
-%filter by Loglikelihood
-thresh=500;
-filter=find(locs(:,LL)<thresh);
-subsetLL=locs(filter,1:end);
+locs(:,y)=locs(:,y)*0.625;
+locs(:,x)=locs(:,x)*0.625;
 
 % Find width and heigth
-heigth=round((max(subsetLL(:,y))-min(subsetLL(:,y)))/pxlsize);
-width=round((max(subsetLL(:,x))-min(subsetLL(:,x)))/pxlsize);
+heigth=round((max(locs(:,y))-min(locs(:,y)))/pxlsize);
+width=round((max(locs(:,x))-min(locs(:,x)))/pxlsize);
 
 % Calculate 2D histogram --> 10 nm/pxl
 
-im=hist3([subsetLL(:,x),subsetLL(:,y)],[width heigth]); % heigth x width
-I16 = uint16(round(im*65535));
+im=hist3([locs(:,x),locs(:,y)],[width heigth]); % heigth x width
+imwrite(im,'rendered_10nm_pxl.tiff');
+
+
+%% Show images
 
 % Show 2D 
 figure
 set(gcf, 'name', '2D Histogram')
-imshow(I16)
+imshow(im)
 colormap('hot');
 
 % Apply Gaussian Filter
